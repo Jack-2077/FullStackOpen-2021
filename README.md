@@ -13,3 +13,10 @@
 > Participants are expected to have good programming skills, basic knowledge of web programming and databases, and to know the basics of working with the Git version-control system. You are also expected to have perseverance and the ability for independent problem solving and information seeking.
 
 Course Website: https://fullstackopen.com/en
+
+## Course Exercises
+
+### Part 0 - Fundamentals of Web apps
+*Traditional web applications, single page applications, HTTP forms, HTML & CSS review.*
+
+* [Traditional web app & SPA sequence diagrams](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part0)
