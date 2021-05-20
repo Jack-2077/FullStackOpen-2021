@@ -1,26 +1,45 @@
 import React, { useState } from 'react'
 
 const Header = (props) => <h1>{props.text}</h1>
+
+const Button = ({handleClick, text}) => {
+  return(
+  <button onClick={handleClick}>{text}</button>
+  )
+}
+
+const Statistic = ({text, value}) => {
+  return (
+    <div>{text} {value}</div>
+  )
+}
+
+const Calculate = ({good, neutral, bad, operation}) => {
+  if(operation === "sum")
+    return (<div>all {good+ neutral + bad}</div>)
+
+  else if(operation === "average")
+    return (<div>average {(good - bad) / (good+ neutral + bad)}</div>)  
+
+  else
+    return (<div>positive {(good * 100 /( good + neutral + bad ))} % </div>)  
+}
   
 const Statistics = ({good, neutral, bad}) => {
 
   if((good || neutral || bad) === 0)
-  {
-    return(
-      <>No feedbacks given</>
-    )
-  }
+     return(<>No feedbacks given</>)
+  
   
   return(
-    <>
-    good {good}<br />
-    neutral {neutral}<br />
-    bad {bad}<br />
-    
-    all {good+ neutral + bad}<br />
-    average {(good - bad) / (good+ neutral + bad)}<br />
-    positive {(good * 100/( good + neutral + bad ))}%
-    </>
+    <div>
+      <Statistic text="good" value={good}/>
+      <Statistic text="neutral" value={neutral}/>
+      <Statistic text="bad" value={bad}/>
+      <Calculate good={good} neutral={neutral} bad={bad} operation="sum"/>
+      <Calculate good={good} neutral={neutral} bad={bad} operation="average"/>
+      <Calculate good={good} neutral={neutral} bad={bad} operation="positive"/>
+    </div>
     )
 
 }
@@ -40,9 +59,9 @@ const App = () => {
   return (
     <div>
       <Header text="give feedback"/>
-      <button onClick={handleGood}>good</button>
-      <button onClick={handleNeutral}>neutral</button>
-      <button onClick={handleBad}>bad</button>
+      <Button handleClick={handleGood} text="good" />
+      <Button handleClick={handleNeutral} text="neutral" />
+      <Button handleClick={handleBad} text="bad" />
       <Header text="statistics"/>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
