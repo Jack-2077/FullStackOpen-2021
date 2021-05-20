@@ -3,10 +3,18 @@ import React, { useState } from 'react'
 const Header = (props) => <h1>{props.text}</h1>
   
 const Statistics = ({good, neutral, bad}) => {
+
+  if((good || neutral || bad) === 0)
+  {
+    return(
+      <>No feedbacks given</>
+    )
+  }
+  
   return(
     <>
     good {good}<br />
-    neutral{neutral}<br />
+    neutral {neutral}<br />
     bad {bad}<br />
     
     all {good+ neutral + bad}<br />
