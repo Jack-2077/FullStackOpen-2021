@@ -10,36 +10,36 @@ const Button = ({handleClick, text}) => {
 
 const Statistic = ({text, value}) => {
   return (
-    <div>{text} {value}</div>
+    <tr><td>{text} </td><td>{value}</td></tr>
   )
 }
 
 const Calculate = ({good, neutral, bad, operation}) => {
   if(operation === "sum")
-    return (<div>all {good+ neutral + bad}</div>)
+    return (<tr><td>all </td><td>{good+ neutral + bad}</td></tr>)
 
   else if(operation === "average")
-    return (<div>average {(good - bad) / (good+ neutral + bad)}</div>)  
+    return (<tr><td>average </td><td>{(good - bad) / (good+ neutral + bad)}</td></tr>)  
 
   else
-    return (<div>positive {(good * 100 /( good + neutral + bad ))} % </div>)  
+    return (<tr><td>positive </td><td>{(good * 100 /( good + neutral + bad ))} % </td></tr>)  
 }
   
 const Statistics = ({good, neutral, bad}) => {
 
   if((good || neutral || bad) === 0)
-     return(<>No feedbacks given</>)
+     return(<tr><td>No feedbacks given</td></tr>)
   
   
   return(
-    <div>
+    <>
       <Statistic text="good" value={good}/>
       <Statistic text="neutral" value={neutral}/>
       <Statistic text="bad" value={bad}/>
       <Calculate good={good} neutral={neutral} bad={bad} operation="sum"/>
       <Calculate good={good} neutral={neutral} bad={bad} operation="average"/>
       <Calculate good={good} neutral={neutral} bad={bad} operation="positive"/>
-    </div>
+    </>
     )
 
 }
@@ -63,7 +63,11 @@ const App = () => {
       <Button handleClick={handleNeutral} text="neutral" />
       <Button handleClick={handleBad} text="bad" />
       <Header text="statistics"/>
+      <table>
+      <tbody>
       <Statistics good={good} neutral={neutral} bad={bad} />
+      </tbody>
+      </table>
     </div>
   )
 }
