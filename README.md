@@ -32,6 +32,6 @@ Course Website: https://fullstackopen.com/en
 ### Part 2 - Communicating with server
 *Modules, forms, getting data from server, effect hooks, sending data to server, inline styles.*
 
-* [Countries](https://github.com/orrsteinberg/fullstackopen-2020/tree/master/part2/countries)
-* [Courseinfo](https://github.com/orrsteinberg/fullstackopen-2020/tree/master/part2/courseinfo)
-* [Phonebook](https://github.com/orrsteinberg/fullstackopen-2020/tree/master/part2/phonebook)
+* [Countries](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part2/countries)
+* [Courseinfo](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part2/courseinfo)
+* [Phonebook](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part2/phonebook)
