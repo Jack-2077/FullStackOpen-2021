@@ -9,18 +9,23 @@ const Content = ({ parts }) => <div>{parts.map(part => <Part key={part.id} parts
 const Total = ({ parts }) => {
      const sum = parts.reduce((total, part) => total + part.exercises, 0)
     return(
-      <p>Number of exercises {sum}</p>
+      <p key={parts.id}><strong>Total of {sum} exercises</strong></p>
     ) 
   }
     
 const Course = ({course}) => {
     return (
         <>
-        <Header key={course.id} content={course.name} />
-        <Content parts={course.parts} />
-        <Total parts={course.parts} />
-        </>
-    )
-}
-
+        {course.map((data) => {
+            return (
+            <div key={data.id}>
+            <Header  key={data.id} content={data.name} />
+            <Content parts={data.parts} />
+            <Total  parts={data.parts} />
+            </div>)
+            })
+        }
+            </> 
+        )}
+            
 export default Course
