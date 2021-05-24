@@ -20,3 +20,18 @@ Course Website: https://fullstackopen.com/en
 *Traditional web applications, single page applications, HTTP forms, HTML & CSS review.*
 
 * [Traditional web app & SPA sequence diagrams](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part0)
+
+### Part 1 - Introduction to React
+*React, modern JavaScript, hooks vs "old react", debugging.*
+
+* [Anecdotes](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part1/anecdotes)
+* [Courseinfo](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part1/courseinfo)
+* [Unicafe](https://github.com/Jack-2077/FullStackOpen-2021/tree/main/part1/unicafe)
+
+
+### Part 2 - Communicating with server
+*Modules, forms, getting data from server, effect hooks, sending data to server, inline styles.*
+
+* [Countries](https://github.com/orrsteinberg/fullstackopen-2020/tree/master/part2/countries)
+* [Courseinfo](https://github.com/orrsteinberg/fullstackopen-2020/tree/master/part2/courseinfo)
+* [Phonebook](https://github.com/orrsteinberg/fullstackopen-2020/tree/master/part2/phonebook)
