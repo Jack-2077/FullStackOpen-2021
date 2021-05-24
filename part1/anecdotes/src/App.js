@@ -17,7 +17,8 @@ const App = () => {
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
   ]
-   
+
+  
   const [selected, setSelected] = useState(0)
   const [vote, setVote] = useState(new Array(anecdotes.length).fill(0))
   let [most, setMost] = useState(0)
