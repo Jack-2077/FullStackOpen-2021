@@ -7,8 +7,7 @@ const Part = ({parts}) => <p>{parts.name} {parts.exercises} </p>
 const Content = ({ parts }) => <div>{parts.map(part => <Part key={part.id} parts={part} />)}</div>
 
 const Total = ({ parts }) => {
-    let sum = 0
-    parts.map((part => sum += part.exercises))
+     const sum = parts.reduce((total, part) => total + part.exercises, 0)
     return(
       <p>Number of exercises {sum}</p>
     ) 
