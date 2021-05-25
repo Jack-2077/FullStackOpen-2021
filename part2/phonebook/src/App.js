@@ -6,21 +6,26 @@ const App = () => {
     { content: 'Arto Hellas'}
   ]) 
   const [ newName, setNewName ] = useState('')
+
+  const addName = () => {
+    const newNameObject = {
+      content: newName,
+      date: new Date().toISOString()
+    }
+
+    setPersons(persons.concat(newNameObject))
+    setNewName('')
+  }
   
   const handleSubmit = (event) => {
       event.preventDefault()
-      const newNameObject = {
-        content: newName,
-        date: new Date().toISOString()
-      }
-
-      setPersons(persons.concat(newNameObject))
-      setNewName('')
+      persons.some(item => item.content === newName) ? alert(`${newName} is already added to phonebook`) : addName()
   }
 
   const handleChange = (event) => {
     setNewName(event.target.value)
   }
+  
   return (
     <div>
       <h2>Phonebook</h2>
