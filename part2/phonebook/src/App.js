@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
-import Name from './components/Name'
+
+const Header = ({content}) => <h2>{content}</h2>
+
+const Name = (props) => <li>{props.content} {props.number}</li>
+  
+const Persons = ({props}) =>  props.map(item =>  <Name key={item.name} content={item.name} number={item.number} />) 
+
+const Form = ({content, value, onChange}) => <div>{content} <input value={value} onChange={onChange} /></div>
 
 const App = () => {
   const [ persons, setPersons ] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
     { name: 'Ada Lovelace', number: '39-44-5323523' },
     { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' },
-    { name: 'abc', number: '123' },
-    { name: 'def', number: '456' }
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
 
   const [ newName, setNewName ] = useState('')
@@ -56,31 +61,20 @@ const App = () => {
       searchItem(input)
   }
 
-  const filter = (props) => props.map(item =>  <Name key={item.name} content={item.name} number={item.number} />)
-
-  const Person = () => {
-    return ( (!filterName) ? filter(persons) : filter(filterPersons) )
-  }
   return (
     <div>
-      <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={filterName} onChange={handleFilterChange} />
-      </div>
-      <h2>add a new</h2>
+      <Header content="Phonebook" />
+      <Form content="filter shown with " value={filterName} onChange={handleFilterChange}/>
+      <Header content="add a new" />
       <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
+        <Form content="name: " value={newName} onChange={handleNameChange} />
+        <Form content="number: " value={newNumber} onChange={handleNumberChange} />
         <div>
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
-      <Person />
+      <Header content="Numbers" />
+      { !filterName ? (<Persons props={persons} />) : (<Persons props={filterPersons} />) }
     </div>
   )
 }
