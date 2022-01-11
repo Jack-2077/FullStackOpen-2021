@@ -1,73 +1,63 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import "./styles.css";
+import {useEffect, useState} from "react"
+import axios from "axios"
 
-const Form = ({ content, value, onChange }) => (
-  <form>
-    {content} <input value={value} onChange={onChange} />
-  </form>
-);
 
-const Info = ({ content }) => <p>{content}</p>;
-
-const DisplayCountries = ({ countries }) => {
-  return countries.map((country) => {
-    return <div key={country.name}>{country.name}</div>;
-  });
-};
-
-const DisplayInfo = ({ info }) => {
+const DisplayCountry = ({countryInfo}) => {
+  const info = countryInfo[0]
   return (
     <>
-      <h2>{info.name}</h2>
-      <p>capital {info.capital}</p>
-      <p>population {info.population}</p>
-      <h3>languages</h3>
-      <ul>
-        {info.languages.map((lang) => {
-          return <li key={lang.name}>{lang.name}</li>;
-        })}
+    <h2>{info.name.common}</h2>
+    <p>capital {info.capital}</p>
+    <p>population {info.population} </p>
+
+    <h3>Languages</h3>
+    <ul>
+      {Object.values(info.languages).map((item, index) => 
+      <li key={index}>{item}</li>)}
       </ul>
-      <img src={info.flag} alt="country flag" width="100" height="100" />
+      <img src={info.flags["png"]} alt="flag" height="150px" width="150px"/>
     </>
-  );
-};
+  )
+  }
 
-const App = () => {
-  const [newCountry, setNewCountry] = useState("");
+export default function App() {
 
-  const [info, setInfo] = useState([]);
+  
+  const [input, setInput] = useState("")
+  const [countries, setCountries]  = useState([])
 
-  const HandleFormChange = (event) => setNewCountry(event.target.value);
+  const onChangeHandler = (e) => {
+   setInput(e.target.value);
+  }
 
   useEffect(() => {
-    if (newCountry) {
-      axios
-        .get(`https://restcountries.eu/rest/v2/name/${newCountry}`)
-        .then((response) => {
-          const jsonLength = response.data.length;
-          jsonLength > 1 ? setInfo(response.data) : setInfo(response.data[0]);
-        });
-    }
-  }, [newCountry]);
 
-  const arrayLength = Array.isArray(info) ? info.length : 1;
+    if(input)
+    {
+    axios
+   .get(`https://restcountries.com/v3.1/name/${input}`)
+   .then(response => {
+     setCountries(response.data)
+   }).catch(err => err)}
+  }, [input])
 
+  let countriesLength = Array.isArray(countries) ? countries.length : 1;
   return (
-    <>
-      <Form
-        content="find countries"
-        value={newCountry}
-        onChange={HandleFormChange}
-      />
-      {arrayLength > 1 && arrayLength <= 10 && (
-        <DisplayCountries countries={info} />
-      )}
-      {arrayLength === 1 && <DisplayInfo info={info} />}
-      {arrayLength > 10 && (
-        <Info content="Too many matches, specify another filter" />
-      )}
-    </>
+  <>
+      <p>find countries 
+        <input type="text" value={input} onChange={onChangeHandler}/>
+        <br />
+         {(countries.length > 1 && countries.length <= 10) && 
+          countries.map((item, index) => <li style={{listStyle: 'none'}} key={index}>{item.name.common}<br /></li>)} 
+          </p>
+           {countries.length === 1 && <DisplayCountry countryInfo={countries}/>}
+           {(input && countriesLength > 10) && "Too many matches, specify another filter"}
+        
+       
+      
+       
+      
+  </>
   );
-};
-
-export default App;
+}
