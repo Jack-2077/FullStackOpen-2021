@@ -4,9 +4,18 @@ import axios from "axios"
 
 
 const DisplayCountry = ({countryInfo}) => {
+  const [weather, setWeather] = useState({temp: "", png: "", wind: "", dir: ""})
   const info = Array.isArray(countryInfo) ? countryInfo[0] : countryInfo
+
+  axios.get(`https://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_YOUR_API_KEY_NAME}&q=${info.capital}&aqi=no`)
+  .then(response => {
+    setWeather({temp: response.data.current.temp_c, png: response.data.current.condition.icon,
+    wind: response.data.current.wind_mph, dir: response.data.current.wind_dir})
+  }).catch(error => console.log(error))
   return (
+    
     <>
+    
     <h2>{info.name.common}</h2>
     <p>capital {info.capital}</p>
     <p>population {info.population} </p>
@@ -17,6 +26,10 @@ const DisplayCountry = ({countryInfo}) => {
       <li key={index}>{item}</li>)}
       </ul>
       <img src={info.flags["png"]} alt="flag" height="150px" width="150px"/>
+      <h3>Weather in {info.name.common}</h3>
+      <strong>temperature: {weather.temp} Celsius</strong><br />
+      <img src={weather.png} alt="country flag" /><br />
+      <strong>wind:</strong> {weather.wind} mph direction {weather.dir}
     </>
   )
   }
@@ -31,7 +44,7 @@ const DisplayCountry = ({countryInfo}) => {
     )
   }
 
-  const DisplayCountryList = ({countriesList, country}) => {
+  const DisplayCountryList = ({countriesList}) => {
      return (
       countriesList.map((item, index) => (
       <li style={{listStyle: 'none'}} key={index}>
@@ -48,7 +61,6 @@ export default function App() {
   
   const [input, setInput] = useState("")
   const [countries, setCountries]  = useState([])
-  const [onShow, setOnShow] = useState(false)
 
   const onChangeHandler = (e) => {
    setInput(e.target.value);
@@ -65,7 +77,6 @@ export default function App() {
    }).catch(err => err)}
   }, [input])
 
-  const onShowHandler = () => setOnShow(!onShow)
   let countriesLength = Array.isArray(countries) ? countries.length : 1;
   return (
   <>
