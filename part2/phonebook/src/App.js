@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import personService from './services/persons';
 
 const Header = ({ content }) => <h2>{content}</h2>;
 
@@ -39,9 +40,11 @@ const App = () => {
       number: newNumber,
     };
 
-    setPersons(persons.concat(newPersonObject));
-    setNewNumber('');
-    setNewName('');
+    personService.create(newPersonObject).then((personsList) => {
+      setPersons(persons.concat(personsList));
+      setNewNumber('');
+      setNewName('');
+    });
   };
 
   const handleSubmit = (event) => {
@@ -64,8 +67,6 @@ const App = () => {
   };
 
   const searchItem = (input) => {
-    const copy = [];
-    console.log(input, persons);
     persons.some((item) => {
       if (item.name.toLowerCase() === input)
         setFilterPersons({ name: item.name, number: item.number });
