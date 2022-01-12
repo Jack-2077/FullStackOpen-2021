@@ -25,7 +25,7 @@ const DisplayCountry = ({countryInfo}) => {
       {Object.values(info.languages).map((item, index) => 
       <li key={index}>{item}</li>)}
       </ul>
-      <img src={info.flags["png"]} alt="flag" height="150px" width="150px"/>
+      <img src={info.flags["png"]} alt="flag" height="100px" width="150px"/>
       <h3>Weather in {info.name.common}</h3>
       <strong>temperature: {weather.temp} Celsius</strong><br />
       <img src={weather.png} alt="country flag" /><br />
