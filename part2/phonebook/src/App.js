@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
+import Persons from './components/Persons';
 import personService from './services/persons';
 
 const Header = ({ content }) => <h2>{content}</h2>;
-
-const Name = ({ content, number }) => (
-  <li>
-    {content} {number}
-  </li>
-);
-
-const Persons = ({ persons }) =>
-  persons.map((item) => (
-    <Name key={item.name} content={item.name} number={item.number} />
-  ));
 
 const Form = ({ content, value, onChange }) => (
   <div>
@@ -46,12 +36,45 @@ const App = () => {
     });
   };
 
+  const handleReplace = (id, updatedPerson) => {
+    const message = `${updatedPerson.name} is already added to phonebook, replace the old number with a new one?`;
+
+    if (window.confirm(message)) {
+      personService
+        .update(id, updatedPerson)
+        .then((response) =>
+          setPersons(persons.map((item) => (item.id !== id ? item : response)))
+        );
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    let updatePerson = {};
     if (newName && newNumber) {
-      persons.some((item) => item.name === newName || item.number === newNumber)
-        ? alert(`this person or number is already added to phonebook`)
-        : addName();
+      const isPersonExist = persons.some((item) => {
+        if (
+          item.name.toLowerCase() === newName.toLowerCase() &&
+          item.number !== newNumber
+        ) {
+          updatePerson = { ...item, number: newNumber };
+          handleReplace(item.id, updatePerson);
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      const isPersonDuplicate = persons.some(
+        (item) =>
+          item.name.toLowerCase() === newName.toLowerCase() ||
+          item.number === newNumber
+      );
+
+      isPersonDuplicate &&
+        alert('this person or number is already added to phonebook');
+
+      !isPersonExist && !isPersonDuplicate && addName();
     } else {
       alert('Your name or number is missing');
     }
@@ -80,6 +103,14 @@ const App = () => {
     input.length > 0 && searchItem(input);
   };
 
+  const onDeleteHandler = (id, name) => {
+    const message = `Delete ${name} ?`;
+    if (window.confirm(message)) {
+      personService.deletePerson(id).then((response) => response);
+      setPersons(persons.filter((p) => p.id !== id));
+    } else return 0;
+  };
+
   return (
     <div>
       <Header content='Phonebook' />
@@ -102,7 +133,7 @@ const App = () => {
       </form>
       <Header content='Numbers' />
       {!filterName ? (
-        <Persons persons={persons} />
+        <Persons persons={persons} deleteHandler={onDeleteHandler} />
       ) : (
         filterPersons.name + ' ' + filterPersons.number
       )}
