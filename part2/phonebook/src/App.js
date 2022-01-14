@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Persons from './components/Persons';
 import personService from './services/persons';
+import Notification from './components/Notification';
 
 const Header = ({ content }) => <h2>{content}</h2>;
 
@@ -16,6 +17,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filterName, setNewFilterName] = useState('');
   const [filterPersons, setFilterPersons] = useState({ name: '', number: '' });
+  const [popup, setPopup] = useState('');
 
   useState(() => {
     personService
@@ -23,6 +25,10 @@ const App = () => {
       .then((intialPersonsList) => setPersons(intialPersonsList));
   }, []);
 
+  const showPopup = (name) => {
+    setPopup(`Added ${name}`);
+    setTimeout(() => setPopup(''), 5000);
+  };
   const addName = () => {
     const newPersonObject = {
       name: newName,
@@ -34,6 +40,7 @@ const App = () => {
       setNewNumber('');
       setNewName('');
     });
+    showPopup(newName);
   };
 
   const handleReplace = (id, updatedPerson) => {
@@ -45,6 +52,7 @@ const App = () => {
         .then((response) =>
           setPersons(persons.map((item) => (item.id !== id ? item : response)))
         );
+      showPopup(updatedPerson.name);
     }
   };
 
@@ -66,9 +74,7 @@ const App = () => {
       });
 
       const isPersonDuplicate = persons.some(
-        (item) =>
-          item.name.toLowerCase() === newName.toLowerCase() ||
-          item.number === newNumber
+        (item) => item.number === newNumber
       );
 
       isPersonDuplicate &&
@@ -114,6 +120,7 @@ const App = () => {
   return (
     <div>
       <Header content='Phonebook' />
+      <Notification message={popup} />
       <Form
         content='filter shown with '
         value={filterName}
