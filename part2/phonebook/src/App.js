@@ -17,7 +17,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filterName, setNewFilterName] = useState('');
   const [filterPersons, setFilterPersons] = useState({ name: '', number: '' });
-  const [popup, setPopup] = useState('');
+  const [popup, setPopup] = useState({ message: '', errorCode: 0 });
 
   useState(() => {
     personService
@@ -25,8 +25,15 @@ const App = () => {
       .then((intialPersonsList) => setPersons(intialPersonsList));
   }, []);
 
-  const showPopup = (name) => {
-    setPopup(`Added ${name}`);
+  const showPopup = (name, status) => {
+    //status: 0 when there is no error and 1 when there is an error
+    const errorCodeCheck = status === 1;
+    const msg = errorCodeCheck
+      ? `Information of ${name} has already been removed from the server`
+      : `Added ${name}`;
+    errorCodeCheck
+      ? setPopup({ message: msg, errorCode: 1 })
+      : setPopup({ message: msg, errorCode: 0 });
     setTimeout(() => setPopup(''), 5000);
   };
   const addName = () => {
@@ -40,19 +47,17 @@ const App = () => {
       setNewNumber('');
       setNewName('');
     });
-    showPopup(newName);
+    showPopup(newName, 0);
   };
 
   const handleReplace = (id, updatedPerson) => {
     const message = `${updatedPerson.name} is already added to phonebook, replace the old number with a new one?`;
 
     if (window.confirm(message)) {
-      personService
-        .update(id, updatedPerson)
-        .then((response) =>
-          setPersons(persons.map((item) => (item.id !== id ? item : response)))
-        );
-      showPopup(updatedPerson.name);
+      personService.update(id, updatedPerson).then((response) => {
+        setPersons(persons.map((item) => (item.id !== id ? item : response)));
+        showPopup(updatedPerson.name, 0);
+      });
     }
   };
 
@@ -112,7 +117,10 @@ const App = () => {
   const onDeleteHandler = (id, name) => {
     const message = `Delete ${name} ?`;
     if (window.confirm(message)) {
-      personService.deletePerson(id).then((response) => response);
+      personService
+        .deletePerson(id)
+        .then((response) => response)
+        .catch((response) => showPopup(name, 1));
       setPersons(persons.filter((p) => p.id !== id));
     } else return 0;
   };
